@@ -1,10 +1,9 @@
 import tensorflow as tf
-import numpy as np
-import cv2
+from PIL import Image
 
 reader = tf.TFRecordReader()
 
-filename_queue = tf.train.string_input_producer(['/home/zehao/PycharmProjects/tfrecord/mnist.tfrecords'])
+filename_queue = tf.train.string_input_producer(['/home/zehao/PycharmProjects/learn-tensorflow/mnist.tfrecords'])
 
 _, serialized_example = reader.read(filename_queue)
 
@@ -28,6 +27,8 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
 for i in range(10):
   image, label, pixel = sess.run([images, labels, pixels])
-  cv2.imshow('test', np.reshape(image, (28,28,1)))
-  print 'label:', label, 'pixel:', pixel
-  cv2.waitKey(0)
+  img = Image.frombytes('L', [28, 28], image)
+  img.show('show')
+  #cv2.imshow('test', np.reshape(image, (28,28,1)))
+  #print 'label:', label, 'pixel:', pixel
+  #cv2.waitKey(0)
